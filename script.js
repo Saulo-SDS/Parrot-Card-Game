@@ -1,5 +1,11 @@
 let number_of_cards;
 let cards = [];
+let roading_game;
+let open_cards;
+let card_one;
+let card_two;
+let hits;
+let rounds;
 const images = ['bobrossparrot.gif','explodyparrot.gif','fiestaparrot.gif','metalparrot.gif','revertitparrot.gif','tripletsparrot.gif','unicornparrot.gif'];
 
 function initGame(){  
@@ -8,6 +14,10 @@ function initGame(){
         number_of_cards = prompt("Digite a quantidade de cartas");
     }while(number_of_cards & 1 || number_of_cards < 4 || number_of_cards > 14);
 
+    roading_game = true;
+    open_cards = 0;
+    hits = 0;
+    rounds = 0;
     insertCards();
 }
 
@@ -31,4 +41,39 @@ function insertCards() {
     for (let i=0; i < number_of_cards; ++i) {
         container.innerHTML += cards[i];
     }
+}
+
+function turnCard(card){
+    rounds++;
+    if(roading_game && !card.querySelector(".front-face").classList.contains("turn")){
+        roading_game = false;
+        card.querySelector(".front-face").classList.toggle("turn");
+        card.querySelector(".back-face").classList.toggle("turn");
+        setTimeout(checkMove(card),1000);
+    }
+}
+
+function checkMove(element) {
+    if(open_cards === 0){
+        roading_game = true;
+        open_cards++;
+        card_one = element;
+    }else{
+        open_cards--;
+        card_two = element;
+        if(card_one.querySelector(".back-face").innerHTML === card_two.querySelector(".back-face").innerHTML ){
+            hits++;
+            roading_game = true;
+        }else{
+            setTimeout(untapCards, 1000);
+        }
+    }
+}
+
+function untapCards() {
+    card_one.querySelector(".front-face").classList.toggle("turn");
+    card_one.querySelector(".back-face").classList.toggle("turn");
+    card_two.querySelector(".front-face").classList.toggle("turn");
+    card_two.querySelector(".back-face").classList.toggle("turn");
+    roading_game = true;
 }
