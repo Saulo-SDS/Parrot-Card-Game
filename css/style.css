@@ -19,7 +19,7 @@ body {
 	justify-content: center;
 	margin-top: 47px;
 	flex-wrap: wrap;
-	height: auto;
+	height: 100%;
 }
 
 h1 {
@@ -76,6 +76,13 @@ img {
 	transform: rotateY(-180deg);
 }
 
+.clock {
+	position: fixed;
+	right: 10px;
+	top: 10px;
+}
+
+
 @media (max-width: 614px) {
 
 	.container {
@@ -87,8 +94,11 @@ img {
     h1 {
         font-size: 36px;
         line-height: 42px;
-        letter-spacing: 0;
         color: #75B79E;
         margin: 0 30px 0 30px; 
     }
+
+	h6 {
+		color: #75B79E;
+	}
 }

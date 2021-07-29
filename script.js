@@ -6,6 +6,7 @@ let card_one;
 let card_two;
 let hits;
 let rounds;
+let clock;
 const images = ['bobrossparrot.gif','explodyparrot.gif','fiestaparrot.gif','metalparrot.gif','revertitparrot.gif','tripletsparrot.gif','unicornparrot.gif'];
 
 function initGame(){  
@@ -18,6 +19,7 @@ function initGame(){
     open_cards = 0;
     hits = 0;
     rounds = 0;
+    clock = 0;
     insertCards();
 }
 
@@ -72,7 +74,7 @@ function checkMove(element) {
 
 function checkPlayerWin(){
     if(hits === number_of_cards/2){
-        alert(`Você ganhou em ${rounds/2} jogadas!`);
+        alert(`Você ganhou em ${rounds/2} jogadas!\nTempo de jogo: ${clock} segundos`);
         restartGame();
     }else{
         roading_game = true;
@@ -97,3 +99,9 @@ function restartGame() {
         alert("Thanks for playing!!!");
     }
 }
+
+function releaseClock() {
+	document.querySelector(".clock").innerHTML = clock++;
+}
+
+setInterval(releaseClock, 1000);
