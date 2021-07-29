@@ -63,10 +63,18 @@ function checkMove(element) {
         card_two = element;
         if(card_one.querySelector(".back-face").innerHTML === card_two.querySelector(".back-face").innerHTML ){
             hits++;
-            roading_game = true;
+            setTimeout(checkPlayerWin, 1000);
         }else{
             setTimeout(untapCards, 1000);
         }
+    }
+}
+
+function checkPlayerWin(){
+    if(hits === number_of_cards/2){
+        alert(`Você ganhou em ${rounds/2} jogadas!`);
+    }else{
+        roading_game = true;
     }
 }
 
