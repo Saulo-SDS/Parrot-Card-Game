@@ -63,9 +63,10 @@ function checkMove(element) {
     }else{
         open_cards--;
         card_two = element;
+        roading_game = false;
         if(card_one.querySelector(".back-face").innerHTML === card_two.querySelector(".back-face").innerHTML ){
             hits++;
-            setTimeout(checkPlayerWin, 1000);
+            checkPlayerWin();
         }else{
             setTimeout(untapCards, 1000);
         }
@@ -101,7 +102,7 @@ function restartGame() {
 }
 
 function releaseClock() {
-	document.querySelector(".clock").innerHTML = clock++;
+    document.querySelector(".clock").innerHTML = clock++;
 }
 
 setInterval(releaseClock, 1000);
