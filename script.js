@@ -73,6 +73,7 @@ function checkMove(element) {
 function checkPlayerWin(){
     if(hits === number_of_cards/2){
         alert(`Você ganhou em ${rounds/2} jogadas!`);
+        restartGame();
     }else{
         roading_game = true;
     }
@@ -84,4 +85,15 @@ function untapCards() {
     card_two.querySelector(".front-face").classList.toggle("turn");
     card_two.querySelector(".back-face").classList.toggle("turn");
     roading_game = true;
+}
+
+function restartGame() {
+    let choice = prompt("Deseja jogar novamente?");
+    if(choice === "sim"){
+        document.querySelector(".container").innerHTML = "";
+        cards = [];
+        setTimeout(initGame, 500);
+    }else{
+        alert("Thanks for playing!!!");
+    }
 }
