@@ -6,26 +6,19 @@ let hits, rounds;
 let clock, idInterval;
 let player_win, player_points, player_name;
 let points, errs;
-
 const images = ['bobrossparrot.gif','explodyparrot.gif','fiestaparrot.gif','metalparrot.gif','revertitparrot.gif','tripletsparrot.gif','unicornparrot.gif'];
 
 function initGame(){  
-    
-    do{
-        number_of_cards = prompt("Digite a quantidade de cartas");
-    }while(number_of_cards & 1 || number_of_cards < 4 || number_of_cards > 14);
 
     player_name = prompt("Digite seu nome");
-    roading_game = true;
-    player_win = false;
-    player_points = 0;
-    open_cards = 0;
-    hits = 0;
-    rounds = 0;
-    clock = 0;
-    points = 0;
-    errs = 0;
+    do{
 
+        number_of_cards = prompt("Digite a quantidade de cartas entre 4-14");
+    }while(number_of_cards & 1 || number_of_cards < 4 || number_of_cards > 14);
+
+    roading_game = true, player_win = false;
+    player_points = 0, open_cards = 0, hits = 0, rounds = 0, clock = 0, points = 0, errs = 0;
+  
     informGame();
     insertCards();
     incrementCounter();
@@ -57,12 +50,13 @@ function insertCards() {
 function informGame(){
 
     const informs = document.querySelector('.informsGame');
+    informs.innerHTML = "";
     let infos = `<h6>Pontos: <span class="points">${player_points}</span></h6>
                  <h6>Tempo de jogo: <span class="clock"${clock}></span></h6>`;
                  
     informs.innerHTML = infos;
-
 }
+
 function turnCard(card){
 
     rounds++;
@@ -99,9 +93,10 @@ function checkMove(element) {
 function checkPlayerWin(){
     if(player_win){
         stopClock();
-        alert(`Você ganhou em ${rounds/2} jogadas!\nTempo de jogo: ${clock} segundos`);
+        alert(`Você ganhou em ${rounds/2} jogadas!\nTempo de jogo: ${clock} segundos\nPontuação total: ${points.toFixed(2)}`);
         saveRanking();
-        restartGame();
+        showRanking();
+        setTimeout(restartGame,3000);
     }else{
         roading_game = true;
     }
@@ -116,8 +111,10 @@ function untapCards() {
 }
 
 function restartGame() {
+    
     let choice = prompt("Deseja jogar novamente?");
     if(choice === "sim"){
+        document.querySelector(".informsGame").innerHTML = "";
         document.querySelector(".container").innerHTML = "";
         cards = [];
         setTimeout(initGame, 500);
@@ -132,18 +129,15 @@ function releaseClock() {
 }
 
 function updatePoints() {
-    if(errs === 0){
-        points += 4;
-    }else if(errs > number_of_cards){
-        points += 0.5;
-    }else{
-        points += 2 + (errs/number_of_cards);
-    }
-
+    if(errs === 0) points += 4;
+    else if(errs > number_of_cards) points += 0.5;
+    else points += 2 + (errs/number_of_cards);
+    
+    if(player_win) points = (points * number_of_cards) + (100/clock);
+    
     errs = 0;
     document.querySelector(".points").innerHTML = points.toFixed(2);
 }
-
 
 function incrementCounter() {
     idInterval = setInterval(releaseClock, 1000);
@@ -152,3 +146,42 @@ function incrementCounter() {
 function stopClock() {
     clearInterval(idInterval);
 }
+
+function saveRanking(){
+
+    let ranking = [];
+    if(JSON.parse(localStorage.getItem("ranking"))){
+       ranking  = JSON.parse(localStorage.getItem("ranking"));
+    }
+    let player = {nome: player_name, pontos: points};
+    ranking.push(player);
+    localStorage.setItem("ranking", JSON.stringify(ranking));
+}
+
+function showRanking(){
+
+    let top_raking =  `<div class="show-ranking">
+                            <ul class="rank-pos"><p>Pos</p>          
+                            </ul> 
+                            <ul class="rank-name"><p>Nome do Jogador</p>
+                            </ul>
+                            <ul class="rank-point"><p>Pontos</p>
+                            </ul>
+                        </div>`;
+
+    document.querySelector(".container").innerHTML = top_raking;
+    document.querySelector(".informsGame").innerHTML = "<h2>Ranking</h2>";
+
+    let rank_pos = document.querySelector(".rank-pos");
+    let rank_name = document.querySelector(".rank-name");
+    let rank_point = document.querySelector(".rank-point");
+    let ranking = JSON.parse(localStorage.getItem("ranking"));
+
+    ranking.sort((a, b) => b.pontos - a.pontos);
+    for(let i = 0; i < ranking.length; ++i){
+        rank_pos.innerHTML += `<li>${i+1}</li>`;
+        rank_name.innerHTML += `<li>${ranking[i].nome}</li>`;
+        rank_point.innerHTML += `<li>${ranking[i].pontos.toFixed(2)}</li>`;
+    }
+}
+
