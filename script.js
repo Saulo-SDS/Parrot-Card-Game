@@ -21,7 +21,9 @@ function initGame(){
   
     informGame();
     insertCards();
-    incrementCounter();
+    incrementCounter();/*
+    localStorage.clear();
+    showRanking();*/
 }
 
 function comparador() { 
@@ -153,7 +155,7 @@ function saveRanking(){
     if(JSON.parse(localStorage.getItem("ranking"))){
        ranking  = JSON.parse(localStorage.getItem("ranking"));
     }
-    let player = {nome: player_name, pontos: points};
+    let player = {nome: player_name, cartas: number_of_cards, pontos: points};
     ranking.push(player);
     localStorage.setItem("ranking", JSON.stringify(ranking));
 }
@@ -163,7 +165,9 @@ function showRanking(){
     let top_raking =  `<div class="show-ranking">
                             <ul class="rank-pos"><p>Pos</p>          
                             </ul> 
-                            <ul class="rank-name"><p>Nome do Jogador</p>
+                            <ul class="rank-name"><p>Jogador</p>
+                            </ul>
+                            <ul class="rank-card"><p>N° cartas</p>
                             </ul>
                             <ul class="rank-point"><p>Pontos</p>
                             </ul>
@@ -174,6 +178,7 @@ function showRanking(){
 
     let rank_pos = document.querySelector(".rank-pos");
     let rank_name = document.querySelector(".rank-name");
+    let rank_card = document.querySelector(".rank-card");
     let rank_point = document.querySelector(".rank-point");
     let ranking = JSON.parse(localStorage.getItem("ranking"));
 
@@ -181,6 +186,7 @@ function showRanking(){
     for(let i = 0; i < ranking.length; ++i){
         rank_pos.innerHTML += `<li>${i+1}</li>`;
         rank_name.innerHTML += `<li>${ranking[i].nome}</li>`;
+        rank_card.innerHTML += `<li>${ranking[i].cartas}</li>`;
         rank_point.innerHTML += `<li>${ranking[i].pontos.toFixed(2)}</li>`;
     }
 }
