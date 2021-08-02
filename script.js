@@ -21,9 +21,7 @@ function initGame(){
   
     informGame();
     insertCards();
-    incrementCounter();/*
-    localStorage.clear();
-    showRanking();*/
+    incrementCounter();
 }
 
 function comparador() { 
@@ -165,7 +163,7 @@ function showRanking(){
     let top_raking =  `<div class="show-ranking">
                             <ul class="rank-pos"><p>Pos</p>          
                             </ul> 
-                            <ul class="rank-name"><p>Jogador</p>
+                            <ul class="rank-name"><p>Jfaogador</p>
                             </ul>
                             <ul class="rank-card"><p>N° cartas</p>
                             </ul>
