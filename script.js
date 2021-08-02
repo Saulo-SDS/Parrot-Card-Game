@@ -112,7 +112,7 @@ function untapCards() {
 
 function restartGame() {
     
-    let choice = prompt("Deseja jogar novamente?");
+    let choice = prompt("Deseja jogar novamente?\n(sim/nao)");
     if(choice === "sim"){
         document.querySelector(".informsGame").innerHTML = "";
         document.querySelector(".container").innerHTML = "";
@@ -163,7 +163,7 @@ function showRanking(){
     let top_raking =  `<div class="show-ranking">
                             <ul class="rank-pos"><p>Pos</p>          
                             </ul> 
-                            <ul class="rank-name"><p>Jfaogador</p>
+                            <ul class="rank-name"><p>Jogador</p>
                             </ul>
                             <ul class="rank-card"><p>N° cartas</p>
                             </ul>
