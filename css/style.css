@@ -12,12 +12,19 @@ body {
 	box-sizing: border-box;
 }
 
+.informsGame {
+	height: 20px;
+	margin-top: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
 .container {
 	width: 100%;
 	height: auto;
 	display: flex;
 	justify-content: center;
-	margin-top: 47px;
 	flex-wrap: wrap;
 	height: 100%;
 }
@@ -82,18 +89,34 @@ img {
 }
 
 .clock {
-	position: fixed;
-	right: 10px;
-	top: 10px;
+	text-align: right;
+}
+
+.show-ranking{ 
+	width: 80%;
+	height: 400px;
+	background-color: blueviolet;
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	border: 5px solid black;
+	border-radius: 5px;
 }
 
 
+.show-ranking ul li, p{
+	margin-top: 10px;
+}
+
 @media (max-width: 614px) {
+
+	.informsGame {
+		margin-top: 70px;
+	}
 
 	.container {
 		flex-direction: column;
 		align-items: center;
-		margin-top: 47px;
 	}
 
     h1 {

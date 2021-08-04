@@ -1,12 +1,12 @@
 let number_of_cards;
 let cards = [];
 let roading_game;
-let open_cards;
-let card_one;
-let card_two;
-let hits;
-let rounds;
-let clock;
+let open_cards, card_one, card_two;
+let hits, rounds;
+let clock, idInterval;
+let player_win, player_points, player_name;
+let points, errs;
+
 const images = ['bobrossparrot.gif','explodyparrot.gif','fiestaparrot.gif','metalparrot.gif','revertitparrot.gif','tripletsparrot.gif','unicornparrot.gif'];
 
 function initGame(){  
@@ -15,12 +15,20 @@ function initGame(){
         number_of_cards = prompt("Digite a quantidade de cartas");
     }while(number_of_cards & 1 || number_of_cards < 4 || number_of_cards > 14);
 
+    player_name = prompt("Digite seu nome");
     roading_game = true;
+    player_win = false;
+    player_points = 0;
     open_cards = 0;
     hits = 0;
     rounds = 0;
     clock = 0;
+    points = 0;
+    errs = 0;
+
+    informGame();
     insertCards();
+    incrementCounter();
 }
 
 function comparador() { 
@@ -28,6 +36,7 @@ function comparador() {
 }
 
 function insertCards() {
+
     const container = document.querySelector('.container');
     images.sort(comparador);
     for (let i = 0; i < (number_of_cards/2); ++i) {
@@ -45,7 +54,17 @@ function insertCards() {
     }
 }
 
+function informGame(){
+
+    const informs = document.querySelector('.informsGame');
+    let infos = `<h6>Pontos: <span class="points">${player_points}</span></h6>
+                 <h6>Tempo de jogo: <span class="clock"${clock}></span></h6>`;
+                 
+    informs.innerHTML = infos;
+
+}
 function turnCard(card){
+
     rounds++;
     if(roading_game && !card.querySelector(".front-face").classList.contains("turn")){
         roading_game = false;
@@ -56,6 +75,7 @@ function turnCard(card){
 }
 
 function checkMove(element) {
+
     if(open_cards === 0){
         roading_game = true;
         open_cards++;
@@ -66,16 +86,21 @@ function checkMove(element) {
         roading_game = false;
         if(card_one.querySelector(".back-face").innerHTML === card_two.querySelector(".back-face").innerHTML ){
             hits++;
-            checkPlayerWin();
+            player_win = (hits === number_of_cards/2);
+            updatePoints();
+            setTimeout(checkPlayerWin, 500);
         }else{
+            errs++;
             setTimeout(untapCards, 1000);
         }
     }
 }
 
 function checkPlayerWin(){
-    if(hits === number_of_cards/2){
+    if(player_win){
+        stopClock();
         alert(`Você ganhou em ${rounds/2} jogadas!\nTempo de jogo: ${clock} segundos`);
+        saveRanking();
         restartGame();
     }else{
         roading_game = true;
@@ -102,7 +127,28 @@ function restartGame() {
 }
 
 function releaseClock() {
-    document.querySelector(".clock").innerHTML = clock++;
+    if(!player_win) clock++
+    document.querySelector(".clock").innerHTML = clock;
 }
 
-setInterval(releaseClock, 1000);
+function updatePoints() {
+    if(errs === 0){
+        points += 4;
+    }else if(errs > number_of_cards){
+        points += 0.5;
+    }else{
+        points += 2 + (errs/number_of_cards);
+    }
+
+    errs = 0;
+    document.querySelector(".points").innerHTML = points.toFixed(2);
+}
+
+
+function incrementCounter() {
+    idInterval = setInterval(releaseClock, 1000);
+}
+
+function stopClock() {
+    clearInterval(idInterval);
+}
